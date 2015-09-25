@@ -9,6 +9,8 @@ I modified the code for the problem of
 * Two regime 
 * GARCH(1,1) 
 
+I only modified and debugged it, not created it.
+
 <hr> 
 For estimating the parameters of Regime switching GARCH(1,1), 
 you have to run 
