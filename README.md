@@ -13,3 +13,7 @@ I modified the code for the problem of
 For estimating the parameters of Regime switching GARCH(1,1), 
 you have to run 
 <code> [thetahat results struct]= swgarchest(data,flag,ORDERS,reg) </code>
+
+* flag = 2 is recommended, 
+* I only tested it for the 'reg = 2'
+* I only tested it for ORDERS = [1,1,1]
