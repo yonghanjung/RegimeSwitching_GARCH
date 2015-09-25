@@ -17,6 +17,7 @@ you have to run
 * flag = 2 is recommended, 
 * I only tested it for the 'reg = 2'
 * I only tested it for ORDERS = [1,1,1] or  [0,1,1]
+  * [1,1,1] means GARCH(1,1) with the constant (mu) existed, [0,1,1] means GARCH(1,1) with the constant (mu) NOT existed
 
 <hr> 
 As the code is SUPER slow, I will port it into the Python code. 
