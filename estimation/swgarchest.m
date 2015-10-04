@@ -1,4 +1,4 @@
-function [thetahat results struct]= swgarchest(data,flag,ORDERS,reg,startval,startM, hreal)
+function [thetahat results struct]= swgarchest(data,flag,ORDERS,reg)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

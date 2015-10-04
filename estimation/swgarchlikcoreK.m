@@ -32,6 +32,8 @@ q = ORDERS(3);
 m = max(p,q);
 T = length(data);
 a0 = parameters(1+c:p+q+1:end);
+
+
 a = zeros(k,1);
 b = zeros(k,1);
 
@@ -53,7 +55,11 @@ b = diag(b);
 A = [eye(k)-P;ones(1,k)];
 I3 = eye(k+1);
 c3 = I3(:,k+1);
-pinf = ((A'*A)\A'*c3);
+if det(A'*A) ~= 0,
+    pinf = ((A'*A)\A'*c3);
+else
+    pinf = ((A'*A + eye(k) * 1e-15)\A'*c3);
+end
 
 pt = zeros(k,T+1);
 pr = zeros(k,T);

@@ -64,6 +64,7 @@ T = length(data);
 switch flag
     case 1 % Klaassen's specification
         [L,loglik,p,pt,h] = swgarchlikcoreK(parameters,P,data,k,ORDERS);         
+        L
     case 2 %Haas specification
         [L,loglik,p,pt,h] = swgarchlikcoreH(parameters,P,data,k,ORDERS);            
 end
