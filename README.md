@@ -2,7 +2,7 @@
 
 It is written in MATLAB. 
 The original matlab code that I refered can be found in "http://www.thomaschuffart.fr/?page_id=12",
-and it is the same code used by Juri Marcucci, for "Forecasting Stock Market Volatility with Regime-Switching GARCH Models".
+and it is the same code used by Juri Marcucci, for "Forecasting Stock Market Volatility with Regime-Switching GARCH Models". (M. Juri. Forecasting stock market volatility with regime-switching garch models. Studies in Nonlinear Dynamics & Econometrics, 9(4), 2005) 
 
 As there are many errors in the code (Not runnable) I debugged and modified the code for the case of 
 * two regimes 
