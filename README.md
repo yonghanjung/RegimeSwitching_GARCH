@@ -1,15 +1,12 @@
 # RegimeSwitching_GARCH
 
 It is written in MATLAB. 
-The original matlabcode can be found in 
-"http://www.thomaschuffart.fr/?page_id=12"
+The original matlab code that I refered can be found in "http://www.thomaschuffart.fr/?page_id=12",
+and it is the same code used by Juri Marcucci, for "Forecasting Stock Market Volatility with Regime-Switching GARCH Models".
 
-Howver, as there are many errors in the code uploaded at the above link,
-I modified the code for the problem of 
-* Two regime 
+As there are many errors in the code (Not runnable) I debugged and modified the code for the case of 
+* two regimes 
 * GARCH(1,1) 
-
-I only modified and debugged it, not created it.
 
 <hr> 
 For estimating the parameters of Regime switching GARCH(1,1), 
