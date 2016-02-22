@@ -1,4 +1,4 @@
-function [DownLogRecord,Label ,Answer, PerformanceInt, PerformanceFloat] = Main( RecordNum )
+function [DownLogRecord,Label ,Answer, PerformanceInt, PerformanceFloat, thetahat, results, struct] = Main( RecordNum )
 
 %%%%%%%%%%%%%%% File READ %%%%%%%%%%%%
 Extension = '_RR.csv';
@@ -18,7 +18,6 @@ for i = 1:length(HansRR),
             Label = [Label,1];
         else
             Label = [Label,0];
-            123123123
         end
     else
         Label = [Label,0];

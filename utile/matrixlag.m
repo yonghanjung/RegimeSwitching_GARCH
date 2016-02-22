@@ -7,8 +7,8 @@ function [y,x]=matrixlag(x,nb_lags,const)
 %
 %   INPUT:
 %       - data: x, the data 
-%       - nb_lags: The number of lags 
-%       - const: 1 if we want a constant in the lag of x 
+%       - nb_lags: The number of lags = 0
+%       - const: 1 if we want a constant in the lag of x = 1
 %
 %   OUTPUT:
 %       [X Y] a matrix with

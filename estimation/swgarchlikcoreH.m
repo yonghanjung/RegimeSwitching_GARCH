@@ -25,26 +25,39 @@ function [L, loglik,pr,pt,h] = swgarchlikcoreH(parameters,P,data,k,ORDERS)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-p = ORDERS(2);
-c = ORDERS(1);
-q = ORDERS(3); 
+p = ORDERS(2); % = 1 
+c = ORDERS(1); % = 0 
+q = ORDERS(3); % = 1
 m = max(p,q);
 a = zeros(k,1);
 b = zeros(k,1);
+
+% Suppose that ORDER [0,1,1]
+% parameters = [omega1, omega2, alpha1, alpha2, beta1, beta2] 
 
 if c == 1,
     mu = parameters(1);
     epsi = data-mu;
 else
-    epsi = data;
+    epsi = data; % This is all epsilons 
 end
 T = length(epsi);
-a0 = parameters(1+c:p+q+1:end);
+
+% a0 = parameters(1:3:end) = parameters(1,4)
+% a0 = [omega1, 
+a0 = parameters(1+c:p+q+1:end); % WHAT THE HELL IS THAT? 
+
 for i = 1:p,
-    a(:,i) = parameters(1+c+i:p+q+1:end);
+    a(:,i) = parameters(1+c+i:p+q+1:end); 
+    % a(:,1) = parameters(2:3:end) = parametes(2,5) 
+    % a(1,1) = parameter(2) = omega2 
+    % a(2,1) = parameter(5) = beta1 
 end
 for i = 1:q,
     b(:,i) = parameters(1+c+i+p:p+q+1:end);
+    % b(:,1) = parameters(3:3:end) = parametes(3,6) 
+    % b(1,1) = parameter(3) = alpha1 
+    % b(2,1) = parameter(6) = beta2 
 end
 
 b = diag(b);
@@ -81,6 +94,7 @@ pt(:,1) = pinf;
 % temp = normpdf(epsi(1,1),0,sqrt(h(1:k,1)));
 % temp 
 % fprintf('\n')
+
 
 f(:,1)= normpdf(epsi(1,1),0,sqrt(h(1:k,1)));
 LL(1:k,1)=pt(1:k,1).*f(:,1);

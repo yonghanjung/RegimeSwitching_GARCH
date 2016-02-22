@@ -44,9 +44,19 @@ p = ORDERS(2);
 c = ORDERS(1);
 q = ORDERS(3); 
 % nbparatot = (p+q+c+1)*k;
-nbparatot = (p+q+c)*k ;
-prob = para(nbparatot+1:end);
+nbparatot = (p+q+c)*k ; % (1+1+1) * 2 = 6 
+
+% [hb]
+
+% [bhat; omega; alpha;; beta] 
+% prob = param(7,8)
+% parameters = [omega, alpha, beta] 
+% parameters = (1,2,3,4,5,6)
+prob = para(nbparatot+1:end); 
 parameters = para(1:nbparatot);
+
+
+
 % fprintf('prob \n')
 % prob
 % parameters

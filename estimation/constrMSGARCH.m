@@ -1,11 +1,11 @@
 function [c ceq] = constrMSGARCH(x,k,nbcgtot)
-%
+% Nonlinear constratin of MSGARCH 
 % Purpose: function to compute the stationarity constraint of a MS-GARCH
 %               model
 %
 % INPUTS: - x the vector of parameters 
 %              - k the number of regimes
-%              - nbcgtot: the number of GARCH parameters 
+%              - nbcgtot: the number of GARCH parameters = 8
 %
 % OUTPUTS: - c inequality constraints
 %
@@ -17,12 +17,12 @@ function [c ceq] = constrMSGARCH(x,k,nbcgtot)
     nbcg = nbcgtot/k;
 
     if k == 2,
-        a1 = x(2);
-        b1 = x(3);
-        a2 = x(5);
-        b2 = x(6);
-        p = x(7);
-        q = x(8);
+        a1 = x(2); %omega_1 
+        b1 = x(3); %omega_2
+        a2 = x(5); %alpha_1
+        b2 = x(6); %alpha_2 
+        p = x(7); %p11 
+        q = x(8); %p22
 
         M = [p*(a1+b1) 0 (1-q)*(a1+b1) 0 ; p*a2 p*b2 (1-q)*a2 (1-q)*b2 ; (1-p)*b1 (1-p)*a1 q*b1 q*a1 ; 0 (1-p)*(a2+b2) 0 q*(a2+b2)];
 

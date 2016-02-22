@@ -13,7 +13,14 @@ function [thetahat results struct]= swgarchest(data,flag,ORDERS,reg)
 %   %%% ADDED %%% ORDERS should be [1,1,1] for now %%% ADDED %%%
 %   ORDERS: A vector of length = 3 with ORDERS(1) = c the conditional mean, 
 %   ORDERS(2) = p (GARCH order), ORDER(3) = q (GARCH order)
+
+    % ORDER = [1,1,1] or [0,1,1] 
+
 %   reg: the number of regime
+
+    % reg = 2 
+    % nargin = 4 
+
 %   startval: vector of initial values for the likelihood initialization 
 %   startM: transition probability matrix starting values for the likelhood
 %   initialization
@@ -32,7 +39,7 @@ function [thetahat results struct]= swgarchest(data,flag,ORDERS,reg)
 
 %Check the inputs%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if nargin < 7,
+if nargin < 7,% This is My case! 
     flagmse = 0;
 else
     flagmse = 1;
@@ -41,7 +48,7 @@ else
     end
 end
     
-if nargin < 4
+if nargin < 4 
     error('number of regime mispecified');
 elseif length(reg) > 1 || reg < 0
     error('reg has to be a positive scalar');
@@ -70,35 +77,45 @@ if nargin < 1,
     error('you should read the abstract')
 end
 
-% Test on startM
+% This is My case! 
 if nargin < 6 
 %     startM = diag(ones(k));
-    startM = diag(ones(k,1));
+    startM = diag(ones(k,1)); % Identity matrix as the first 
 elseif size(startM,1) ~= k || size(startM,2) ~= k
     error('startM has to be a k*k matrix')
 end
+
+% Check whether the column sum of startM is equal to 1 
 A = sum(startM);
 if A ~= ones(1,k),
     error('startM has to be a probability transtion matrix')
 end
 
 
+
+% MY CASE! 
 if nargin < 5 || isempty(startval),
-    startval = 0;
+    startval = 0; % What the hell is that?
 end
 
-if size(startval,1) ~= k || size(startval,2) ~= (p+q+c+1),
+
+% MY CASE! 
+if size(startval,1) ~= k || size(startval,2) ~= (p+q+c+1), 
     if startval == 0,
+        % Printed
     fprintf('\n Valdep is empty, we assign it default value \n'); 
     
     else
         fprintf('\n startval is mispecified, we assign it default values \n')
     end
     
+    % if [1,1,1] 
     if c ~= 0,
             [Y X] = matrixlag(data,0,c);
             bhat = X\Y; 
             bhat = real(bhat);
+    
+    % if [0,1,1] 
     else
         bhat = [] ;
     end
@@ -106,11 +123,15 @@ if size(startval,1) ~= k || size(startval,2) ~= (p+q+c+1),
     alpha  =  .05*ones(k,p);
     beta   =  0.05*ones(k,q)/q;
     omega  =  0.01*ones(k,1);  
+    
+    % if [0,1,1] 
     if isempty(bhat),
         startval = [omega ; alpha ; beta];
+    
+    % if [1,1,1] 
     else
         if p ~= 0,
-            startval = [bhat ; omega ; alpha ; beta];
+            startval = [bhat ; omega ; alpha ; beta]; % num: 7
         else
             startval = bhat;
         end
@@ -132,19 +153,30 @@ c = ORDERS(1);
 p = ORDERS(2);
 q = ORDERS(3);
 k = reg;
-nbparaGarch = k*(p+q+1);
+% Number of GARCH parameters, 2*(1+1+1 (omega)  ) = 6 
+nbparaGarch = k*(p+q+1); % =6 
+
+% Number of paramters, 8 
 nbpara = k*(p + q + 1 + c);
 
 if k == 2,
 
 %     startvaltot = [reshape(startval,nbpara,1) ; startM(1,1);startM(2,2)];
+
+% 9 dim if [1,1,1]
+% [bhat; omega; alpha; beta; startM(1,1); startM(2,2)] 
     startvaltot = [reshape(startval,length(startval),1) ; startM(1,1);startM(2,2)];
 else
     startvaltot = [reshape(startval,nbpara,1) ; reshape(startM,k^2,1)];
 end
+
+% Lower Bound: [0,0,0,0,0,0,0,0,0] 
 LB = zeros(1,length(startvaltot));
+
+% No Upper bound 
 UB = [];
 y = data;
+
 options  =  optimset('fmincon');
 options  =  optimset(options , 'Algorithm ','interior-point');
 % options  =  optimset(options , 'Algorithm ','active-set');
@@ -162,10 +194,16 @@ options  =  optimset(options , 'MaxFunEvals' , 3000);
 
 if k == 2,
 %     a = -eye(8);
+    % a = -I9
+    % for all param, 0 <= param <= 1 for stationarity 
     a = -eye(length(startvaltot));
+    
+    % A = [-I9; +I9], 18 by 9 
     A = [a;-a];
 %     bt = [zeros(1,8) ones(1,8)]
     bt = [zeros(1,length(startvaltot)) ones(1,length(startvaltot))]; 
+    
+    % bt = [0;....;0; 1;....;1] 
     Aeq = [];
     beq = [];
 else
@@ -178,8 +216,14 @@ end
 
 % fprintf('A,bt')
 
+% Convex optimization 
+% Maximize the likelihood function 
+% Control variable is x 
 
+% swgarchlik(x,data,reg=2,[0,1,1],2),x0(startvalot),A,bt,Aeq,beq,LB,UB,
+% nonlinearconstraint : constMSGARCH 
 [thetahat,fval,exitflag,output,lambda,grad,hessian] = fmincon(@(x) swgarchlik(x,data,reg,ORDERS,flag),startvaltot,A,bt,Aeq,beq,LB,UB,@(x) constrMSGARCH(x,k,nbpara),options); 
+
 % [thetahat,fval,exitflag,output,lambda,grad,hessian] = fmincon(@(x) swgarchlik(x,data,reg,ORDERS,flag),startvaltot,[],[],[],[],[],[],@(x) constrMSGARCH(x,k,nbpara),options); 
 [LLF,likelihoods,~,p,pt,smoothprob,h] = swgarchlik(thetahat,data,reg,ORDERS,flag);
 
